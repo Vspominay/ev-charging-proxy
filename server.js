@@ -1,5 +1,6 @@
 const express = require('express');
 const {createProxyMiddleware} = require('http-proxy-middleware');
+const cors = require('cors')
 const app = express();
 
 // Common proxy configuration options
@@ -24,6 +25,17 @@ const signalRProxyOptions = {
 };
 
 const signalRProxy = createProxyMiddleware(signalRProxyOptions);
+
+// Cors middleware
+const corsOptions = {
+  origin: 'https://ev-charging-station.onrender.com',
+  credentials: true,
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  methods: 'GET,POST,PUT,DELETE,OPTIONS',
+};
+
+app.use(cors(corsOptions));
+
 
 // Route matching and proxy usage with logging
 app.use('/api', apiProxy);
