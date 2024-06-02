@@ -1,5 +1,6 @@
 const express = require('express');
 const {createProxyMiddleware} = require('http-proxy-middleware');
+const cors = require('cors')
 const app = express();
 
 // Common proxy configuration options
@@ -24,6 +25,9 @@ const signalRProxyOptions = {
 };
 
 const signalRProxy = createProxyMiddleware(signalRProxyOptions);
+
+// Cors middleware
+app.use(cors());
 
 // Route matching and proxy usage with logging
 app.use('/api', apiProxy);
