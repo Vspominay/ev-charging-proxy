@@ -36,7 +36,6 @@ const corsOptions = {
 
 app.use(cors(corsOptions));
 
-
 // Route matching and proxy usage with logging
 app.use('/api', apiProxy);
 app.use('/ChargePointHub', signalRProxy);
