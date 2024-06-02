@@ -30,8 +30,9 @@ const signalRProxy = createProxyMiddleware(signalRProxyOptions);
 const corsOptions = {
   origin: 'https://ev-charging-station.onrender.com',
   credentials: true,
-  allowedHeaders: ['Content-Type', 'Authorization'],
+  allowedHeaders: ['Content-Type', 'Authorization', '*'],
   methods: 'GET,POST,PUT,DELETE,OPTIONS',
+  exposedHeaders: ['*'],
 };
 
 app.use(cors(corsOptions));
