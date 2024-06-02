@@ -1,6 +1,6 @@
 const express = require('express');
 const {createProxyMiddleware} = require('http-proxy-middleware');
-const cors = require('cors')
+const cors = require('cors');
 const app = express();
 
 // Common proxy configuration options
@@ -17,26 +17,32 @@ const apiProxyOptions = {
 
 const apiProxy = createProxyMiddleware(apiProxyOptions);
 
-// SignalR proxy configuration
+// SignalR proxy configuration with optional CORS headers
 const signalRProxyOptions = {
   ...commonOptions,
   target: 'http://13.94.105.73:8030/ChargePointHub',
   ws: true, // Enable WebSockets for SignalR
+
+  // Additional CORS headers for SignalR (optional)
+  onProxyReq: (proxyReq, req, res) => {
+    proxyReq.setHeader('X-Requested-With', 'XMLHttpRequest');
+    proxyReq.setHeader('Access-Control-Allow-Credentials', 'true');  // For credentialed requests
+  }
 };
 
 const signalRProxy = createProxyMiddleware(signalRProxyOptions);
 
-// Cors middleware
-const corsOptions = {
-  origin: 'https://ev-charging-station.onrender.com',
-  optionsSuccessStatus: 200
-};
-
-app.use(cors(corsOptions));
-
 // Route matching and proxy usage with logging
 app.use('/api', apiProxy);
+
+// Proxy SignalR with CORS applied afterwards
 app.use('/ChargePointHub', signalRProxy);
+
+// CORS middleware applied after other middleware (especially SignalR)
+app.use(cors({
+  origin: 'https://ev-charging-station.onrender.com',
+  optionsSuccessStatus: 200
+}));
 
 // Start the server
 const PORT = process.env.PORT || 3000;
