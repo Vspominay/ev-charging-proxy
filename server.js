@@ -11,7 +11,7 @@ const commonOptions = {
 // REST API proxy configuration
 const apiProxyOptions = {
   ...commonOptions,
-  target: 'http://13.94.105.73:8000/api',
+  target: 'http://13.79.133.99:8000/api',
   ws: false, // Disable WebSockets for REST API
 };
 
@@ -20,7 +20,7 @@ const apiProxy = createProxyMiddleware(apiProxyOptions);
 // SignalR proxy configuration
 const signalRProxyOptions = {
   ...commonOptions,
-  target: 'http://13.94.105.73:8030/ChargePointHub',
+  target: 'http://13.79.133.99:8030/ChargePointHub',
   ws: true, // Enable WebSockets for SignalR
 };
 
